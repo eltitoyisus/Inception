@@ -3,17 +3,21 @@ version: '3.9'
 
 services:
   MARIADB:
-    build:
-      context: ./srcs/MariaDB
-    image: MariaDB
+    build: ./srcs/MariaDB
     container_name: MariaDB
     ports:
-      -"3000:3000"
+      -"8000:8000"
 
   NGINX:
-
+    build: ./srcs/NGINX
+    container_name: NGINX
+    ports:
+      -"80:80"
 
   PHP:
-
+    build: ./srcs/PHP
+    container_name: PHP
+    ports:
+      -"3000:3000"
 
 volumes:
