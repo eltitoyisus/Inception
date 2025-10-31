@@ -1,22 +1,63 @@
 
-version: '3.9'
-
 services:
   mariadb:
     build: ./srcs/MariaDB
     container_name: mariadb
-    ports:
-      - "8000:8000"
-
-  nginx:
-    build: ./srcs/NGINX
-    container_name: nginx
-    ports:
-      - "443:443"
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - inception
+    volumes:
+      - db_data:/var/lib/mysql
 
   php:
     build: ./srcs/PHP
     container_name: php
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MARIADB_HOST: mariadb:3306
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME','https://jramos-a.42.fr');
+        define('WP_SITEURL','https://jramos-a.42.fr');
+    networks:
+      - inception
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - mariadb
+
+  nginx:
+    build: ./srcs/NGINX
+    container_name: nginx
+    restart: always
     ports:
-      - "3000:3000"
+      - "443:443"
+    networks:
+      - inception
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - php
+
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jramos-a/data/db
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jramos-a/data/wp
 
