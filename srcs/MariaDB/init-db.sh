@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Read secrets from Docker secrets
+MYSQL_DATABASE=$(cat /run/secrets/mysql_database)
+MYSQL_USER=$(cat /run/secrets/mysql_user)
+MYSQL_PASSWORD=$(cat /run/secrets/mysql_password)
+MYSQL_ROOT_PASSWORD=$(cat /run/secrets/mysql_root_password)
+MYSQL_ADMIN_USER=$(cat /run/secrets/mysql_admin_user)
+MYSQL_ADMIN_PASSWORD=$(cat /run/secrets/mysql_admin_password)
+
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "Initializing database..."
     mysql_install_db --user=mysql --datadir=/var/lib/mysql

@@ -4,8 +4,13 @@ services:
     build: ./srcs/MariaDB
     container_name: mariadb
     restart: always
-    env_file:
-      - .env
+    secrets:
+      - mysql_database
+      - mysql_user
+      - mysql_password
+      - mysql_root_password
+      - mysql_admin_user
+      - mysql_admin_password
     networks:
       - inception
     volumes:
@@ -15,8 +20,10 @@ services:
     build: ./srcs/PHP
     container_name: php
     restart: always
-    env_file:
-      - .env
+    secrets:
+      - mysql_database
+      - mysql_user
+      - mysql_password
     environment:
       MARIADB_HOST: mariadb:3306
       WORDPRESS_TABLE_PREFIX: wp_
@@ -60,4 +67,18 @@ volumes:
       type: none
       o: bind
       device: /home/jramos-a/data/wp
+
+secrets:
+  mysql_database:
+    file: ./secrets/mysql_database.txt
+  mysql_user:
+    file: ./secrets/mysql_user.txt
+  mysql_password:
+    file: ./secrets/mysql_password.txt
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+  mysql_admin_user:
+    file: ./secrets/mysql_admin_user.txt
+  mysql_admin_password:
+    file: ./secrets/mysql_admin_password.txt
 
