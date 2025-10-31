@@ -1,8 +1,5 @@
-# Environment variables
 .env
 
-# Data directories
 /home/
 
-# Docker volumes
 data/
