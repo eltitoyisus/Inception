@@ -70,15 +70,15 @@ volumes:
 
 secrets:
   mysql_database:
-    file: ./secrets/mysql_database.txt
+    file: ./secrets/credentials.txt
   mysql_user:
-    file: ./secrets/mysql_user.txt
+    file: ./secrets/credentials.txt
   mysql_password:
-    file: ./secrets/mysql_password.txt
+    file: ./secrets/db_password.txt
   mysql_root_password:
-    file: ./secrets/mysql_root_password.txt
+    file: ./secrets/db_root_password.txt
   mysql_admin_user:
-    file: ./secrets/mysql_admin_user.txt
+    file: ./secrets/admin.txt
   mysql_admin_password:
-    file: ./secrets/mysql_admin_password.txt
+    file: ./secrets/admin.txt
 
