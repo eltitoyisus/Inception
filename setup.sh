@@ -1,93 +1,59 @@
 #!/bin/bash
 
-echo "==================================="
-echo "Inception Project Setup"
-echo "==================================="
+HOSTS_FILE="/etc/hosts"
+DOMAIN="127.0.0.1 jramos-a.42.fr"
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-CURRENT_USER=$(whoami)
-echo "Current user: $CURRENT_USER"
+# TODO: Set your .env file path here
+ENV_FILE_PATH="/home/jramos-a/.env"
 
-DATA_DIR="/home/$CURRENT_USER/data"
+# Color codes for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
 
+echo "========================================="
+echo "    Inception Project Setup Script      "
+echo "========================================="
 echo ""
-echo "Creating data directories..."
 
-if [ ! -d "$DATA_DIR/db" ]; then
-    mkdir -p "$DATA_DIR/db"
-    echo "✓ Created: $DATA_DIR/db"
-else
-    echo "✓ Directory already exists: $DATA_DIR/db"
+# Check if running as root
+if [ "$EUID" -ne 0 ]; then
+    echo -e "${RED}ERROR: This script must be run as root!${NC}"
+    echo "Run it with: sudo bash setup.sh"
+    exit 1
 fi
 
-if [ ! -d "$DATA_DIR/wp" ]; then
-    mkdir -p "$DATA_DIR/wp"
-    echo "✓ Created: $DATA_DIR/wp"
+# Step 1: Configure hosts file
+echo -e "${YELLOW}[1/2] Configuring hosts file...${NC}"
+if grep -q "jramos-a.42.fr" "$HOSTS_FILE" 2>/dev/null; then
+    echo -e "${GREEN}✓ jramos-a.42.fr already exists in hosts file!${NC}"
 else
-    echo "✓ Directory already exists: $DATA_DIR/wp"
+    echo "$DOMAIN" >> "$HOSTS_FILE"
+    echo -e "${GREEN}✓ Successfully added jramos-a.42.fr to hosts file!${NC}"
 fi
 
-echo ""
-echo "Setting permissions..."
-chmod -R 755 "$DATA_DIR"
-echo "✓ Permissions set to 755 for $DATA_DIR"
+# Step 2: Copy .env file
+echo -e "${YELLOW}[2/2] Setting up .env file...${NC}"
 
-if [ ! -f ".env" ]; then
-    echo ""
-    echo "Creating .env file..."
-    cat > .env << 'EOF'
-# MariaDB credentials
-MYSQL_ROOT_PASSWORD=rootpass
-MYSQL_DATABASE=wpdatabase
-MYSQL_USER=wpuse
-MYSQL_PASSWORD=wppassword
-MYSQL_ADMIN_USER=wpadmin
-MYSQL_ADMIN_PASSWORD=wpadminpass
-EOF
-    echo "✓ Created .env file"
+if [ -z "$ENV_FILE_PATH" ] || [ "$ENV_FILE_PATH" = "/path/to/your/.env" ]; then
+    echo -e "${YELLOW}⚠ Warning: ENV_FILE_PATH not configured in script. Skipping .env setup.${NC}"
+    echo -e "${YELLOW}  Please edit the script and set ENV_FILE_PATH variable.${NC}"
+elif [ ! -f "$ENV_FILE_PATH" ]; then
+    echo -e "${RED}✗ Error: File not found at $ENV_FILE_PATH${NC}"
+    exit 1
 else
-    echo ""
-    echo "✓ .env file already exists"
-fi
-
-echo ""
-echo "Updating docker-compose.yml with current user path..."
-if [ -f "docker-compose.yml" ]; then
-    cp docker-compose.yml docker-compose.yml.bak
-    
-    sed -i "s|/home/jramos-a/data|$DATA_DIR|g" docker-compose.yml
-    echo "✓ Updated docker-compose.yml (backup saved as docker-compose.yml.bak)"
-else
-    echo "⚠ Warning: docker-compose.yml not found"
-fi
-
-if [ -f "Makefile" ]; then
-    cp Makefile Makefile.bak
-    
-    sed -i "s|/home/jramos-a/data|$DATA_DIR|g" Makefile
-    echo "✓ Updated Makefile (backup saved as Makefile.bak)"
-else
-    echo "⚠ Warning: Makefile not found"
+    cp "$ENV_FILE_PATH" "$PROJECT_DIR/.env"
+    chmod 600 "$PROJECT_DIR/.env"
+    echo -e "${GREEN}✓ Successfully copied .env file from $ENV_FILE_PATH${NC}"
 fi
 
 echo ""
-echo "Note: The domain is currently set to 'jramos-a.42.fr'"
-echo "You may need to update it to '$CURRENT_USER.42.fr' in:"
-echo "  - srcs/NGINX/nginx.conf (server_name)"
-echo "  - /etc/hosts (add: 127.0.0.1 $CURRENT_USER.42.fr)"
-
+echo "========================================="
+echo -e "${GREEN}Setup completed successfully!${NC}"
+echo "========================================="
 echo ""
-echo "==================================="
-echo "Setup Complete!"
-echo "==================================="
-echo ""
-echo "Directory structure:"
-echo "  $DATA_DIR/"
-echo "  ├── db/   (MariaDB data)"
-echo "  └── wp/   (WordPress files)"
-echo ""
-echo "Next steps:"
-echo "  1. Make sure Docker is running"
-echo "  2. Add to /etc/hosts: 127.0.0.1 $CURRENT_USER.42.fr"
-echo "  3. Run: make"
-echo "  4. Access: https://$CURRENT_USER.42.fr"
-echo ""
+echo "You can now access your site at:"
+echo "  - http://localhost"
+echo "  - https://jramos-a.42.fr"

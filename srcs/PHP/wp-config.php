@@ -1,8 +1,8 @@
 <?php
 
-define( 'DB_NAME', file_exists('/run/secrets/mysql_database') ? trim(explode("\n", file_get_contents('/run/secrets/mysql_database'))[1]) : 'wordpress' );
-define( 'DB_USER', file_exists('/run/secrets/mysql_database') ? trim(explode("\n", file_get_contents('/run/secrets/mysql_database'))[2]) : 'wpuser' );
-define( 'DB_PASSWORD', file_exists('/run/secrets/mysql_password') ? trim(file_get_contents('/run/secrets/mysql_password')) : 'wppassword' );
+define( 'DB_NAME', getenv('MYSQL_DATABASE') ?: 'wordpress' );
+define( 'DB_USER', getenv('MYSQL_USER') ?: 'wpuser' );
+define( 'DB_PASSWORD', getenv('MYSQL_PASSWORD') ?: 'wppassword' );
 define( 'DB_HOST', getenv('MARIADB_HOST') ?: 'mariadb:3306' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );

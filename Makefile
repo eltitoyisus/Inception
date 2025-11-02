@@ -13,21 +13,22 @@
 all: build up
 
 build:
-	docker compose build
+	sudo docker compose build
 
 up:
-	docker compose up -d
+	sudo docker compose up -d
 
 down:
-	docker compose down
+	sudo docker compose down
 
 clean: down
-	docker system prune -af
-	docker volume prune -f
+	sudo docker system prune -af
+	sudo docker volume prune -f
 
 fclean: clean
-	rm -rf /home/jramos-a/data/db/*
-	rm -rf /home/jramos-a/data/wp/*
+	sudo rm -rf /home/jramos-a/data/db/*
+	sudo rm -rf /home/jramos-a/data/wp/*
+	sudo rm -rf .env
 
 re: fclean all
 

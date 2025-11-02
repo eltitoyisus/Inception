@@ -1,11 +1,12 @@
 #!/bin/bash
 
-MYSQL_ROOT_PASSWORD=$(cat /run/secrets/mysql_root_password)
-MYSQL_DATABASE=$(sed -n '2p' /run/secrets/mysql_database)
-MYSQL_USER=$(sed -n '3p' /run/secrets/mysql_database)
-MYSQL_PASSWORD=$(cat /run/secrets/mysql_password)
-MYSQL_ADMIN_USER=$(sed -n '1p' /run/secrets/mysql_admin_user)
-MYSQL_ADMIN_PASSWORD=$(sed -n '2p' /run/secrets/mysql_admin_password)
+# Read from environment variables
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+MYSQL_DATABASE=${MYSQL_DATABASE}
+MYSQL_USER=${MYSQL_USER}
+MYSQL_PASSWORD=${MYSQL_PASSWORD}
+MYSQL_SECOND_USER=${MYSQL_SECOND_USER}
+MYSQL_SECOND_PASSWORD=${MYSQL_SECOND_PASSWORD}
 
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "Initializing database..."
@@ -33,9 +34,9 @@ if [ ! -f /var/lib/mysql/.db_configured ]; then
 		FLUSH PRIVILEGES;
 		CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
 		CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
-		CREATE USER IF NOT EXISTS '${MYSQL_ADMIN_USER}'@'%' IDENTIFIED BY '${MYSQL_ADMIN_PASSWORD}';
+		CREATE USER IF NOT EXISTS '${MYSQL_SECOND_USER}'@'%' IDENTIFIED BY '${MYSQL_SECOND_PASSWORD}';
 		GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
-		GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_ADMIN_USER}'@'%';
+		GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_SECOND_USER}'@'%';
 		ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 		FLUSH PRIVILEGES;
 	EOSQL

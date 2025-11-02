@@ -4,13 +4,13 @@ services:
     build: ./srcs/MariaDB
     container_name: mariadb
     restart: always
-    secrets:
-      - mysql_database
-      - mysql_user
-      - mysql_password
-      - mysql_root_password
-      - mysql_admin_user
-      - mysql_admin_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_SECOND_USER: ${MYSQL_SECOND_USER}
+      MYSQL_SECOND_PASSWORD: ${MYSQL_SECOND_PASSWORD}
     networks:
       - inception
     volumes:
@@ -20,12 +20,17 @@ services:
     build: ./srcs/PHP
     container_name: php
     restart: always
-    secrets:
-      - mysql_database
-      - mysql_user
-      - mysql_password
     environment:
       MARIADB_HOST: mariadb:3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_USER: ${WP_USER}
+      WP_USER_PASSWORD: ${WP_USER_PASSWORD}
+      WP_USER_EMAIL: ${WP_USER_EMAIL}
       WORDPRESS_TABLE_PREFIX: wp_
       WORDPRESS_CONFIG_EXTRA: |
         define('WP_HOME','https://jramos-a.42.fr');
@@ -67,18 +72,3 @@ volumes:
       type: none
       o: bind
       device: /home/jramos-a/data/wp
-
-secrets:
-  mysql_database:
-    file: ./secrets/credentials.txt
-  mysql_user:
-    file: ./secrets/credentials.txt
-  mysql_password:
-    file: ./secrets/db_password.txt
-  mysql_root_password:
-    file: ./secrets/db_root_password.txt
-  mysql_admin_user:
-    file: ./secrets/admin.txt
-  mysql_admin_password:
-    file: ./secrets/admin.txt
-
