@@ -114,9 +114,26 @@ All data is persisted in the following directories on the host:
 
 ## Domain Configuration
 
-- **Domain:** `jramos-a.42.fr`
+- **Domain:** Configurable via environment variable `DOMAIN_NAME`
+- **Default:** `jramos-a.42.fr`
 - **IP:** Points to local machine (127.0.0.1)
-- **Configuration:** Add to `/etc/hosts`: `127.0.0.1 jramos-a.42.fr`
+- **Configuration:** Add to `/etc/hosts`: `127.0.0.1 your-domain.42.fr`
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+
+```bash
+cp .env.example .env
+```
+
+Key variables:
+- `DOMAIN_NAME` - Your domain name (default: jramos-a.42.fr)
+- `MARIADB_ROOT_PASSWORD` - MariaDB root password
+- `MARIADB_DATABASE` - WordPress database name
+- `MARIADB_USER` / `MARIADB_PASSWORD` - Database user credentials
+- `WP_ADMIN_USER` / `WP_ADMIN_PASSWORD` - WordPress admin credentials
+- `WP_USER` / `WP_USER_PASSWORD` - WordPress second user credentials
 
 ## Network
 
@@ -140,6 +157,10 @@ All containers communicate through a custom Docker bridge network named `incepti
 ## Usage
 
 ```bash
+# Copy and configure environment variables
+cp .env.example .env
+# Edit .env with your settings
+
 # Build and start all services
 make bonus
 
@@ -158,9 +179,9 @@ make re
 
 ## Access Points
 
-After starting the infrastructure:
+After starting the infrastructure (replace with your `DOMAIN_NAME`):
 
-- **WordPress:** https://jramos-a.42.fr or https://localhost
+- **WordPress:** https://your-domain.42.fr or https://localhost
 - **Static Website:** http://localhost:8080
 - **Adminer:** http://localhost:8081
 - **Portainer:** http://localhost:9000

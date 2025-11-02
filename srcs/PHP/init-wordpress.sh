@@ -26,7 +26,7 @@ if ! wp core is-installed --path=/var/www/html --allow-root 2>/dev/null; then
     # Install WordPress
     wp core install \
         --path=/var/www/html \
-        --url="https://jramos-a.42.fr" \
+        --url="https://${DOMAIN_NAME}" \
         --title="Inception WordPress" \
         --admin_user="${WP_ADMIN_USER}" \
         --admin_password="${WP_ADMIN_PASSWORD}" \
