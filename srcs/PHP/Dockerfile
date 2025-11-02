@@ -1,7 +1,7 @@
 FROM alpine:3.21.4
 
 RUN apk update && apk add --no-cache \
-	php php-fpm php-mysqli php-json php-curl php-gd php-xml php-mbstring php-zip php-session php-opcache php-dom php-iconv php-tokenizer php-xmlwriter php-simplexml php-phar php-intl php-fileinfo php-pdo php-pdo_mysql wget tar netcat-openbsd
+	php php-fpm php-mysqli php-json php-curl php-gd php-xml php-mbstring php-zip php-session php-opcache php-dom php-iconv php-tokenizer php-xmlwriter php-simplexml php-phar php-intl php-fileinfo php-pdo php-pdo_mysql php-redis wget tar netcat-openbsd
 
 RUN adduser -D -G www-data www-data
 
@@ -10,7 +10,6 @@ RUN wget https://wordpress.org/latest.tar.gz \
 	&& tar -xzf latest.tar.gz --strip-components=1 \
 	&& rm latest.tar.gz
 
-# Install WP-CLI
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /usr/local/bin/wp \
 	&& chmod +x /usr/local/bin/wp
 

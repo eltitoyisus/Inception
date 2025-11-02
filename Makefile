@@ -12,7 +12,17 @@
 
 all: build up
 
+bonus:
+	@sudo mkdir -p /home/jramos-a/data/db
+	@sudo mkdir -p /home/jramos-a/data/wp
+	@sudo mkdir -p /home/jramos-a/data/portainer
+	sudo docker compose build
+	sudo docker compose up -d
+
 build:
+	@sudo mkdir -p /home/jramos-a/data/db
+	@sudo mkdir -p /home/jramos-a/data/wp
+	@sudo mkdir -p /home/jramos-a/data/portainer
 	sudo docker compose build
 
 up:
@@ -28,9 +38,10 @@ clean: down
 fclean: clean
 	sudo rm -rf /home/jramos-a/data/db/*
 	sudo rm -rf /home/jramos-a/data/wp/*
+	sudo rm -rf /home/jramos-a/data/portainer/*
 	sudo rm -rf .env
 
 re: fclean all
 
-.PHONY: all build up down clean fclean re
+.PHONY: all bonus build up down clean fclean re
 

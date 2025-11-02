@@ -8,6 +8,14 @@ until nc -z mariadb 3306; do
 done
 echo "MariaDB is up!"
 
+# Wait for Redis to be ready
+echo "Waiting for Redis to be ready..."
+until nc -z redis 6379; do
+    echo "Redis is unavailable - sleeping"
+    sleep 2
+done
+echo "Redis is up!"
+
 # Wait a bit more to ensure the database is fully initialized
 sleep 5
 
@@ -38,6 +46,16 @@ if ! wp core is-installed --path=/var/www/html --allow-root 2>/dev/null; then
         --allow-root
     
     echo "Additional user created successfully!"
+    
+    # Install Redis Object Cache plugin
+    echo "Installing Redis Object Cache plugin..."
+    wp plugin install redis-cache --activate --path=/var/www/html --allow-root
+    
+    # Enable Redis cache
+    echo "Enabling Redis cache..."
+    wp redis enable --path=/var/www/html --allow-root
+    
+    echo "Redis cache configured successfully!"
 else
     echo "WordPress is already installed, skipping installation..."
 fi

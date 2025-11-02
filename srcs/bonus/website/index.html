@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inception - Static Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Inception Project</h1>
+        <p>Simple static website running in a Docker container</p>
+        
+        <div class="section">
+            <h2>Services Running:</h2>
+            <ul>
+                <li>NGINX (Main web server)</li>
+                <li>WordPress + PHP-FPM</li>
+                <li>MariaDB</li>
+                <li>Redis Cache</li>
+                <li>FTP Server</li>
+                <li>Adminer</li>
+                <li>Portainer</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Quick Links:</h2>
+            <p><a href="https://localhost">WordPress Site</a></p>
+            <p><a href="http://localhost:8081">Adminer (DB Manager)</a></p>
+            <p><a href="http://localhost:9000">Portainer (Docker Manager)</a></p>
+        </div>
+        
+        <div class="section">
+            <h2>Counter Demo:</h2>
+            <div class="counter">
+                <button onclick="decrement()">-</button>
+                <span id="count">0</span>
+                <button onclick="increment()">+</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>42 School - <span id="year"></span></p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

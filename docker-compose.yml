@@ -55,6 +55,63 @@ services:
     depends_on:
       - php
 
+  redis:
+    build: ./srcs/bonus/redis
+    container_name: redis
+    restart: always
+    networks:
+      - inception
+    depends_on:
+      - php
+
+  ftp:
+    build: ./srcs/bonus/ftp
+    container_name: ftp
+    restart: always
+    ports:
+      - "21:21"
+      - "21000-21010:21000-21010"
+    networks:
+      - inception
+    volumes:
+      - wp_data:/home/ftpuser:rw
+    environment:
+      FTP_USER: ftpuser
+      FTP_PASS: ftppass
+
+  website:
+    build: ./srcs/bonus/website
+    container_name: website
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - inception
+
+  adminer:
+    build: ./srcs/bonus/adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8081:80"
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+
+  portainer:
+    build: ./srcs/bonus/portainer
+    container_name: portainer
+    restart: always
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+    networks:
+      - inception
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
 networks:
   inception:
     driver: bridge
@@ -72,3 +129,9 @@ volumes:
       type: none
       o: bind
       device: /home/jramos-a/data/wp
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jramos-a/data/portainer
