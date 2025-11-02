@@ -72,9 +72,6 @@ services:
     build: ./srcs/bonus/ftp
     container_name: ftp
     restart: always
-    ports:
-      - "21:21"
-      - "21000-21010:21000-21010"
     networks:
       - inception
     volumes:
@@ -87,8 +84,6 @@ services:
     build: ./srcs/bonus/website
     container_name: website
     restart: always
-    ports:
-      - "8080:80"
     networks:
       - inception
 
@@ -96,8 +91,6 @@ services:
     build: ./srcs/bonus/adminer
     container_name: adminer
     restart: always
-    ports:
-      - "8081:80"
     networks:
       - inception
     depends_on:
@@ -107,9 +100,6 @@ services:
     build: ./srcs/bonus/portainer
     container_name: portainer
     restart: always
-    ports:
-      - "9000:9000"
-      - "9443:9443"
     networks:
       - inception
     volumes:

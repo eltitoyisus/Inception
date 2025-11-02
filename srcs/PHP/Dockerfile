@@ -1,7 +1,7 @@
 FROM alpine:3.21.4
 
 RUN apk update && apk add --no-cache \
-	php php-fpm php-mysqli php-json php-curl php-gd php-xml php-mbstring php-zip php-session php-opcache php-dom php-iconv php-tokenizer php-xmlwriter php-simplexml php-phar php-intl php-fileinfo php-pdo php-pdo_mysql php-redis wget tar netcat-openbsd
+	php php-fpm php-mysqli php-json php-curl php-gd php-xml php-mbstring php-zip php-session php-opcache php-dom php-iconv php-tokenizer php-xmlwriter php-simplexml php-phar php-intl php-fileinfo php-pdo php-pdo_mysql php-redis php-ctype wget tar netcat-openbsd
 
 RUN adduser -D -G www-data www-data
 

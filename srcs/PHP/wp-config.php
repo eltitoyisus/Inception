@@ -7,6 +7,9 @@ define( 'DB_HOST', getenv('MARIADB_HOST') ?: 'mariadb:3306' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
 
+define( 'WP_HOME', 'https://' . getenv('DOMAIN_NAME') );
+define( 'WP_SITEURL', 'https://' . getenv('DOMAIN_NAME') );
+
 define( 'WP_REDIS_HOST', 'redis' );
 define( 'WP_REDIS_PORT', 6379 );
 define( 'WP_REDIS_TIMEOUT', 1 );
