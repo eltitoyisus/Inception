@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jramos-a <jramos-a@student.42madrid.com    +#+  +:+       +#+         #
+#    By: jramos-a <jramos-a@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/27 09:49:18 by jramos-a          #+#    #+#              #
-#    Updated: 2025/10/31 08:56:07 by jramos-a         ###   ########.fr        #
+#    Updated: 2025/11/05 09:43:34 by jramos-a         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,7 @@ clean: down
 	sudo docker volume prune -f
 
 fclean: clean
-	sudo rm -rf /home/jramos-a/data/db/*
-	sudo rm -rf /home/jramos-a/data/wp/*
-	sudo rm -rf /home/jramos-a/data/portainer/*
+	sudo rm -rf /home/jramos-a/data
 	sudo rm -rf .env
 
 re: fclean all
